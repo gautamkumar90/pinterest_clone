@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:pinterest_clone/utils/create_bottom_sheet.dart';
 
 class ProfileSearchBar extends StatelessWidget {
-  const ProfileSearchBar({super.key});
+  final VoidCallback onCreatePressed;
+
+  const ProfileSearchBar({
+    super.key,
+    required this.onCreatePressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,16 +36,13 @@ class ProfileSearchBar extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 12),
-          Container(
-            width: 44,
-            height: 44,
-            decoration: BoxDecoration(
-              color: Colors.grey.shade900,
-              borderRadius: BorderRadius.circular(14),
-            ),
-            child: IconButton(
-              icon: Icon(Icons.add, color: Colors.white),
-              onPressed: () => showCreateBottomSheet(context),
+
+          /// + button
+          IconButton(
+            onPressed: onCreatePressed,
+            icon: const Icon(Icons.add, color: Colors.white),
+            style: IconButton.styleFrom(
+              backgroundColor: Colors.grey.shade900,
             ),
           ),
         ],

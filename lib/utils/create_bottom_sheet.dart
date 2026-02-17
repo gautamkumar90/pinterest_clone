@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
-void showCreateBottomSheet(BuildContext context) {
+void showCreateBottomSheet(
+  BuildContext context, {
+  VoidCallback? onCreatePin,
+  VoidCallback? onCreateCollage,
+  VoidCallback? onCreateBoard,
+}) {
   showModalBottomSheet(
     context: context,
     backgroundColor: Colors.transparent,
@@ -43,12 +48,30 @@ void showCreateBottomSheet(BuildContext context) {
 
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: const [
-                _CreateButton(icon: Icons.push_pin_outlined, label: "Pin"),
-                _CreateButton(icon: Icons.cut, label: "Collage"),
+              children: [
+                _CreateButton(
+                  icon: Icons.push_pin_outlined,
+                  label: "Pin",
+                  onTap: () {
+                    Navigator.pop(context);
+                    onCreatePin?.call();
+                  },
+                ),
+                _CreateButton(
+                  icon: Icons.cut,
+                  label: "Collage",
+                  onTap: () {
+                    Navigator.pop(context);
+                    onCreateCollage?.call();
+                  },
+                ),
                 _CreateButton(
                   icon: Icons.space_dashboard_outlined,
                   label: "Board",
+                  onTap: () {
+                    Navigator.pop(context);
+                    onCreateBoard?.call();
+                  },
                 ),
               ],
             ),
@@ -64,28 +87,36 @@ void showCreateBottomSheet(BuildContext context) {
 class _CreateButton extends StatelessWidget {
   final IconData icon;
   final String label;
+  final VoidCallback onTap;
 
-  const _CreateButton({required this.icon, required this.label});
+  const _CreateButton({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          height: 64,
-          width: 64,
-          decoration: BoxDecoration(
-            color: const Color(0xFF3A3A3A),
-            borderRadius: BorderRadius.circular(18),
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        children: [
+          Container(
+            height: 64,
+            width: 64,
+            decoration: BoxDecoration(
+              color: const Color(0xFF3A3A3A),
+              borderRadius: BorderRadius.circular(18),
+            ),
+            child: Icon(icon, color: Colors.white, size: 28),
           ),
-          child: Icon(icon, color: Colors.white, size: 28),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          label,
-          style: const TextStyle(color: Colors.white70, fontSize: 14),
-        ),
-      ],
+          const SizedBox(height: 8),
+          Text(
+            label,
+            style: const TextStyle(color: Colors.white70, fontSize: 14),
+          ),
+        ],
+      ),
     );
   }
 }
